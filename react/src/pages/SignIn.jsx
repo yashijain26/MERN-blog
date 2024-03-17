@@ -1,6 +1,7 @@
 import React, { useState}  from "react";
 import { Button, Label, TextInput } from "flowbite-react";
 import { Link,useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 export const SignIn = () => {
   const navigate = useNavigate()
@@ -43,6 +44,7 @@ export const SignIn = () => {
          
               Sign In
             </Button>
+            <OAuth/>
           </form>
           <div className="flex gap-2 mt-5 text-sm">
             <span>Don't have an account?</span>
@@ -50,6 +52,7 @@ export const SignIn = () => {
               Sign Up
             </Link>
           </div>
+       
         </div>
       </div>
     </div>
