@@ -1,20 +1,20 @@
 import mongoose from "mongoose";
-import { stringify } from "querystring";
+
 
 const userSchema = new mongoose.Schema(
   {
     username: {
-      type: string,
+      type: mongoose.Schema.Types.String,
       required: true,
       unique: true,
     },
     email: {
-      type: string,
+      type: mongoose.Schema.Types.String,
       required: true,
       unique: true,
     },
     password: {
-      type: string,
+      type: mongoose.Schema.Types.String,
       required: true,
     },
   },
