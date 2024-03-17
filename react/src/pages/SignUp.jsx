@@ -9,7 +9,7 @@ const[formData,setFormData] =useState({})
   const handelChange=((e)=>{
     setFormData({...formData,[e.target.id]:e.target.value})
   })
-  console.log(formData)
+
   return (
     <div className="min-h-screen mt-20">
       <div className="flex p-3 max-w-3xl mx-auto">
