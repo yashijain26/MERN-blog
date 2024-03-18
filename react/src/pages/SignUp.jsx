@@ -9,7 +9,7 @@ export const SignUp = () => {
    const [isLoading,setIsLoading] = useState(false)
  const navigate = useNavigate()
   const handelChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
 
   const handelSubmit = async (e) => {
