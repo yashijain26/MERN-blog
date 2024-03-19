@@ -42,17 +42,50 @@ export const SignIn = async (req, res, next) => {
     if (!validPassword) {
       return next(errorHandler(400, "Invalid password"));
     }
-    // for jwt token 
-    const token = jwt.sign({ id: validUser._id },process.env.JWT_SECRET);
+    // for jwt token
+    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
 
     //to protect the password
-    const{password:pass,...rest} = validUser._doc;
+    const { password: pass, ...rest } = validUser._doc;
     //giving token to cookie
     res
       .status(200)
       .cookie("access_token", token, { httpOnly: true })
-      .json(rest)
+      .json(rest);
   } catch (error) {
     next(error);
+  }
+};
+
+export const google = async (req, res, next) => {
+  const { name, email, googlePhotoUrl } = req.body;
+  try {
+  const user = await User.findOne({email})
+  if(user){
+    const token = jwt.sign({id:user._id},process.env.JWT_SECRET);
+    const {password,...rest} =user._doc
+    res.status(200).cookie('access_token',token,{
+      httpOnly:true
+    }).json(rest);
+  }
+  else{
+    // as we will need password for sign up we will create random password by this 
+    const generatePassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+    const hashedPassword = bcryptjs.hashSync(generatePassword,10);
+    const newUser = new User({
+      username:name.toLowerCase().split('').join('')+Math.random().toString(9).slice(-4),
+      password:hashedPassword,
+      email,
+      profilePicture:googlePhotoUrl
+    }) 
+    await newUser.save()
+    const token = jwt.sign({id:newUser._id},process.env.JWT_SECRET);
+    const {password,...rest} = newUser._doc;
+    res.status(200).cookie('access_token',token,{
+      httpOnly:true
+    }).json(rest);
+  }
+  } catch (error) {
+    next(error)
   }
 };
