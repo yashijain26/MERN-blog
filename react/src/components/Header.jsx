@@ -1,11 +1,13 @@
-import { Button, Navbar, TextInput } from "flowbite-react";
+import { Avatar, Button, Dropdown, DropdownItem, Navbar, TextInput } from "flowbite-react";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaSearchengin } from "react-icons/fa";
 import { MdDarkMode } from "react-icons/md";
+import {useSelector} from 'react-redux'
 
 const Header = () => {
   const path = useLocation();
+  const {currentUser} = useSelector(state=>state.user)
   return (
     <Navbar className="border-b-2">
       <Link
@@ -33,9 +35,19 @@ const Header = () => {
         <Button className="w-12 h-10 hidden sm:inline" color="gray" pill>
           <MdDarkMode />
         </Button>
+        {currentUser ? <>
+        <Dropdown arrowIcon={false} inline label={<Avatar alt ='user'img={currentUser.profilePicture} rounded/>}>
+          <Dropdown.Header><span className="block text-sm ">{currentUser.username}</span></Dropdown.Header>
+          <Dropdown.Header><span className="block text-sm font-medium truncate">{currentUser.email}</span></Dropdown.Header>
+          <Link to ='/dashboard?tab=profile'>
+            <DropdownItem>Profile</DropdownItem>
+          </Link>
+          <Dropdown.Divider/>
+          <DropdownItem>sign</DropdownItem>
+          </Dropdown></>:
         <Link to="/SignIn">
           <Button gradientDuoTone="purpleToBlue" outline>Sign In</Button>
-        </Link>
+        </Link>}
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>

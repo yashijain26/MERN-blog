@@ -61,6 +61,7 @@ export const google = async (req, res, next) => {
   const { name, email, googlePhotoUrl } = req.body;
   try {
   const user = await User.findOne({email})
+
   if(user){
     const token = jwt.sign({id:user._id},process.env.JWT_SECRET);
     const {password,...rest} =user._doc
@@ -68,6 +69,7 @@ export const google = async (req, res, next) => {
       httpOnly:true
     }).json(rest);
   }
+ 
   else{
     // as we will need password for sign up we will create random password by this 
     const generatePassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
